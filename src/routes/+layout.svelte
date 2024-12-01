@@ -1,6 +1,28 @@
 <script>
-	import '../app.css';
-	let { children } = $props();
+	import Navbar from '$lib/components/Navbar.svelte'; // Import the Navbar component
+	import '../app.css'; // Include global CSS styles
 </script>
 
-{@render children()}
+<!-- Global Layout -->
+<div class="flex min-h-screen flex-col bg-gray-100">
+	<!-- Navbar: Displayed on all pages -->
+	<Navbar
+		links={[
+			{ name: 'Look up something', href: '/products' },
+			{ name: 'My Orders', href: '/orders' }
+		]}
+	/>
+
+	<!-- Page Content with fixed width -->
+	<main class="flex-1 bg-gray-100 p-4">
+		<div class="container mx-auto max-w-screen-xl">
+			<slot />
+			<!-- Renders content of the current page -->
+		</div>
+	</main>
+
+	<!-- Footer -->
+	<footer class="bg-gray-800 p-4 text-center text-white">
+		<p>&copy; {new Date().getFullYear()} Ecom. All rights reserved.</p>
+	</footer>
+</div>
