@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { login } from '$lib/api/authApi';
 	import { goto } from '$app/navigation';
+	import { authStore } from '$lib/stores/authStore';
 
 	let email = '';
 	let password = '';
@@ -20,6 +21,7 @@
 		try {
 			const response = await login({ email, password });
 			localStorage.setItem('accessToken', response.data.accessToken); // Store tokens securely
+			authStore.login(); // Update the auth store state
 			goto('/'); // Redirect to home or dashboard
 		} catch (err) {
 			error = err instanceof Error ? err.message : 'Login failed';

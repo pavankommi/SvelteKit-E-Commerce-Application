@@ -3,6 +3,7 @@
 	import { logout } from '$lib/api/authApi';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { authStore } from '$lib/stores/authStore';
 
 	let user: {
 		_id: string;
@@ -36,7 +37,7 @@
 					error = err instanceof Error ? err.message : 'Failed to fetch user details.';
 				}
 			} else {
-				error = 'No access token found. Please log in.';
+				error = 'You are not logged in. Please log in to access your account and continue.';
 			}
 		} else {
 			error = 'Cannot access localStorage during SSR.';
@@ -53,12 +54,13 @@
 				try {
 					await logout(token); // Call the logout API
 					localStorage.removeItem('accessToken'); // Clear access token
+					authStore.logout(); // Update the auth store state
 					goto('/login'); // Redirect to login page
 				} catch (err) {
 					error = err instanceof Error ? err.message : 'Failed to logout.';
 				}
 			} else {
-				error = 'No access token found. Please log in.';
+				error = 'You are not logged in. Please log in to access your account and continue.';
 			}
 		}
 	};

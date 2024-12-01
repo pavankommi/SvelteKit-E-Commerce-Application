@@ -1,32 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { verifyToken } from '$lib/api/authApi';
+	import { authStore } from '$lib/stores/authStore';
 
 	type Link = { name: string; href: string };
 	export let links: Link[] = [];
 
-	let isLoggedIn = false;
+	// Initialize with loading state if needed
+	let isLoading = true;
 
-	// Function to validate the token
-	const checkTokenValidity = async () => {
-		const token = localStorage.getItem('accessToken');
-		if (!token) {
-			isLoggedIn = false;
-			return;
-		}
-
-		// Verify the token with the API
-		const valid = await verifyToken(token);
-		if (valid) {
-			isLoggedIn = true;
-		} else {
-			localStorage.removeItem('accessToken'); // Remove invalid token
-			isLoggedIn = false;
-		}
-	};
-
-	onMount(() => {
-		checkTokenValidity();
+	onMount(async () => {
+		await authStore.initialize();
+		isLoading = false;
 	});
 </script>
 
@@ -52,7 +36,7 @@
 		<!-- Right: Action Buttons -->
 		<div class="flex items-center space-x-6">
 			<!-- Login Button: Render only if the user is not logged in -->
-			{#if !isLoggedIn}
+			{#if !$authStore}
 				<a
 					href="/login"
 					class="hidden text-sm font-medium text-gray-300 transition hover:text-white md:block"

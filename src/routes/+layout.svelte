@@ -15,7 +15,7 @@
 
 	<!-- Page Content with fixed width -->
 	<main class="flex-1 bg-gray-100 p-4">
-		<div class="container mx-auto max-w-screen-xl">
+		<div class="container mx-auto max-w-screen-2xl">
 			<slot />
 			<!-- Renders content of the current page -->
 		</div>
