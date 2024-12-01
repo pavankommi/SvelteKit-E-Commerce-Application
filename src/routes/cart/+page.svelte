@@ -176,12 +176,19 @@
 		}
 
 		try {
-			const response = await createAddress(newAddress, token);
-			addresses = [...addresses, response];
-			selectedAddressId = response._id;
+			// Add the new address to the server
+			await createAddress(newAddress, token);
+
+			// Fetch the updated addresses list
+			const updatedAddresses = await fetchAddresses(token);
+
+			// Update the addresses state with the newly fetched list
+			addresses = updatedAddresses.data;
+			selectedAddressId = addresses.find((address) => address.is_default)?._id || '';
+
 			alert('Address added successfully!');
 
-			// Reset form
+			// Reset the form
 			newAddress = {
 				address_line_1: '',
 				city: '',

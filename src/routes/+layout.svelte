@@ -3,6 +3,11 @@
 	import '../app.css'; // Include global CSS styles
 </script>
 
+<svelte:head>
+	<title>Ecom - Your One-Stop Shop</title>
+	<!-- Global Tab Title -->
+</svelte:head>
+
 <!-- Global Layout -->
 <div class="flex min-h-screen flex-col bg-gray-100">
 	<!-- Navbar: Displayed on all pages -->
